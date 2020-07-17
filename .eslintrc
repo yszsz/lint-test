@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint-config-airbnb", "prettier"],
+  "rules": {
+      "generator-star-spacing": "off",
+      "no-unused-expressions": "off"
+  },
+  "globals": {
+      "history": false
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+        "legacyDecorators": true
+    }
+  }
+}
