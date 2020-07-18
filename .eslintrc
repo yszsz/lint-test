@@ -32,7 +32,8 @@
     "react/no-unused-state": 0,
     "react/jsx-one-expression-per-line": 0,
     "import/no-cycle": 0,
-    "prefer-destructuring": 0
+    "prefer-destructuring": 0,
+    "react/jsx-props-no-spreading": 0
   },
   "parserOptions": {
     "ecmaVersion": 6,
@@ -49,6 +50,7 @@
     "editormd": false,
     "describe": false,
     "it": false,
-    "expect": false
+    "expect": false,
+    "localStorage": true
   }
 }

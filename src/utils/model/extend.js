@@ -7,33 +7,36 @@ import storage from '../localStorage';
 export const REMAIN_CORE_STATE = '$$reset_part_state';
 const LOCAL_STATE_SEP = '_';
 // 获取初始localStorage值
-const initialLocalStorage = Object.keys(storage).reduce((last, key) => ({ ...last, [key]: storage.getItem[key] }), {});
+const initialLocalStorage = Object.keys(storage).reduce(
+  (last, key) => ({ ...last, [key]: storage.getItem[key] }),
+  {}
+);
 
 // 获取所有对应namespace下的local state
 const allNSLocalState = {};
 
 function getLocalStateKey(namespace) {
-  return (stateKey) => `$$${namespace}${LOCAL_STATE_SEP}state${LOCAL_STATE_SEP}${stateKey}`;
+  return stateKey =>
+    `$$${namespace}${LOCAL_STATE_SEP}state${LOCAL_STATE_SEP}${stateKey}`;
 }
 
 function getInitialLocalState(namespace) {
   const matchNSKey = getLocalStateKey(namespace)('');
-  return Object.keys(initialLocalStorage)
-    .reduce((last, key) => {
-      const next = { ...last };
-      // 检测是否属于当前ns的state
-      if (key.startsWith(matchNSKey)) {
-        const localState = initialLocalStorage[key];
-        // 删除已经遍历过的属性
-        delete initialLocalStorage[key];
-        // 获取当前ns下对应的state属性
-        const nsStateKey = key.split(LOCAL_STATE_SEP).pop();
-        // 将取出的local的ns和state的存储起来
-        allNSLocalState[namespace][nsStateKey] = localState;
-        Object.assign(next, { [nsStateKey]: localState });
-      }
-      return next;
-    }, null);
+  return Object.keys(initialLocalStorage).reduce((last, key) => {
+    const next = { ...last };
+    // 检测是否属于当前ns的state
+    if (key.startsWith(matchNSKey)) {
+      const localState = initialLocalStorage[key];
+      // 删除已经遍历过的属性
+      delete initialLocalStorage[key];
+      // 获取当前ns下对应的state属性
+      const nsStateKey = key.split(LOCAL_STATE_SEP).pop();
+      // 将取出的local的ns和state的存储起来
+      allNSLocalState[namespace][nsStateKey] = localState;
+      Object.assign(next, { [nsStateKey]: localState });
+    }
+    return next;
+  }, null);
 }
 
 /**
@@ -61,7 +64,7 @@ function getInitialLocalState(namespace) {
  */
 const enhanceSubscriptions = (subscriptions = {}) => {
   function createWrappedSubscriber(subscriber) {
-    return (props) => {
+    return props => {
       const { dispatch, history } = props;
       const listen = (pathReg, handleEnter, handleLeave) => {
         let listeners = {};
@@ -72,7 +75,7 @@ const enhanceSubscriptions = (subscriptions = {}) => {
         } else {
           listeners[pathReg] = [handleEnter, handleLeave];
         }
-        history.listen((location) => {
+        history.listen(location => {
           const { pathname } = location;
           Object.keys(listeners).forEach(key => {
             const actions = listeners[key];
@@ -95,7 +98,9 @@ const enhanceSubscriptions = (subscriptions = {}) => {
               // 获取匹配的关键字
               const keys = key.match(pathToRegexp(key)).slice(1);
               // 将关键字作为params的属性并赋值
-              keys.forEach((item, index) => (params[item.slice(1)] = params[index]));
+              keys.forEach((item, index) => {
+                params[item.slice(1)] = params[index];
+              });
               const route = { ...location, params, query };
               enteredRoute = route;
               if (typeof enterAction == 'object') {
@@ -120,12 +125,10 @@ const enhanceSubscriptions = (subscriptions = {}) => {
     };
   }
 
-  return Object
-    .keys(subscriptions)
-    .reduce((last, key) => {
-      last[key] = createWrappedSubscriber(subscriptions[key]);
-      return last;
-    }, {});
+  return Object.keys(subscriptions).reduce((last, key) => {
+    last[key] = createWrappedSubscriber(subscriptions[key]);
+    return last;
+  }, {});
 };
 
 /**
@@ -222,7 +225,7 @@ const enhanceEffects = (effects = {}, namespace) => {
         update: createUpdateEffect(sagaEffects),
         localize: createLocalizeEffect(sagaEffects),
         select: createSelectEffect(sagaEffects),
-        call: createExtraEffect(sagaEffects)
+        call: createExtraEffect(sagaEffects),
       });
     }
 
@@ -231,13 +234,16 @@ const enhanceEffects = (effects = {}, namespace) => {
   }, {});
 };
 
-function enhanceReducers(reducers, { initialState, namespace, initialLocalState }) {
+function enhanceReducers(
+  reducers,
+  { initialState, namespace, initialLocalState }
+) {
   const AWLAYS_RESET_KEYS = ['visible', 'loading'];
   initialState = { ...initialState };
 
   const getNSLocalStateKey = getLocalStateKey(namespace);
 
-  const createLoadingReducer = (originValue) => (state, { payload = {} }) => {
+  const createLoadingReducer = originValue => (state, { payload = {} }) => {
     const { key, extra } = payload;
     const parentKey = 'loading';
     let parentState = state[parentKey];
@@ -251,7 +257,7 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
 
     return {
       ...state,
-      [parentKey]: parentState
+      [parentKey]: parentState,
     };
   };
 
@@ -261,7 +267,7 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
     updateState(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     /* 如果传入force为true，则重置所有state
@@ -291,12 +297,11 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
       return nextState;
     },
     localizeState(state, { payload = {} }) {
-      Object.keys((payload))
-        .forEach((key) => {
-          const value = payload[key];
-          allNSLocalState[namespace][key] = value;
-          storage.setItem(getNSLocalStateKey(key), value);
-        });
+      Object.keys(payload).forEach(key => {
+        const value = payload[key];
+        allNSLocalState[namespace][key] = value;
+        storage.setItem(getNSLocalStateKey(key), value);
+      });
       return state;
     },
     /**
@@ -309,14 +314,16 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
       const localState = allNSLocalState[namespace];
       if (force) {
         allNSLocalState[namespace] = {};
-        Object.keys(localState).forEach((key) => {
+        Object.keys(localState).forEach(key => {
           localStorage.removeItem(getNSLocalStateKey(key));
         });
       } else if (keys) {
         if (!Type.isArray(keys)) {
-          throw new Error('clearLocalState must have the payload parameter with an array typeof keys ');
+          throw new Error(
+            'clearLocalState must have the payload parameter with an array typeof keys '
+          );
         }
-        keys.forEach((key) => {
+        keys.forEach(key => {
           delete allNSLocalState[namespace][key];
           localStorage.removeItem(getNSLocalStateKey(key));
         });
@@ -331,15 +338,17 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
       const { force, keys } = payload;
       if (force) {
         allNSLocalState[namespace] = initialLocalState;
-        Object.keys(initialLocalState).forEach((key) => {
+        Object.keys(initialLocalState).forEach(key => {
           const value = initialLocalState[key];
           storage.setItem(getNSLocalStateKey(key), value);
         });
       } else if (keys) {
         if (!Type.isArray(keys)) {
-          throw new Error('resetLocalState must have the payload parameter with an array typeof keys ');
+          throw new Error(
+            'resetLocalState must have the payload parameter with an array typeof keys '
+          );
         }
-        keys.forEach((key) => {
+        keys.forEach(key => {
           const value = initialLocalState[key];
           allNSLocalState[namespace][key] = value;
           storage.setItem(getNSLocalStateKey(key), value);
@@ -351,14 +360,18 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
 }
 
 function createModal(model) {
-  return Object.assign({
-    state: {
-      loading: {}
+  // eslint-disable-next-line
+  return Object.assign(
+    {
+      state: {
+        loading: {},
+      },
+      subscriptions: {},
+      effects: {},
+      reducers: {},
     },
-    subscriptions: {},
-    effects: {},
-    reducers: {}
-  }, model);
+    model
+  );
 }
 
 /**
@@ -375,7 +388,13 @@ export default (parent, properties) => {
   }
 
   const model = createModal(parent);
-  const { namespace, state: initialState, subscriptions, effects, reducers } = properties;
+  const {
+    namespace,
+    state: initialState,
+    subscriptions,
+    effects,
+    reducers,
+  } = properties;
 
   allNSLocalState[namespace] = {};
   const initialLocalState = getInitialLocalState(namespace);
@@ -383,9 +402,19 @@ export default (parent, properties) => {
 
   Object.assign(model, { namespace });
   Object.assign(model.state, initialState);
-  Object.assign(model.reducers, enhanceReducers(reducers, { namespace, initialState: model.state, initialLocalState }));
+  Object.assign(
+    model.reducers,
+    enhanceReducers(reducers, {
+      namespace,
+      initialState: model.state,
+      initialLocalState,
+    })
+  );
   Object.assign(model.effects, enhanceEffects(effects, namespace));
-  Object.assign(model.subscriptions, enhanceSubscriptions(subscriptions, namespace));
+  Object.assign(
+    model.subscriptions,
+    enhanceSubscriptions(subscriptions, namespace)
+  );
 
   return model;
 };
