@@ -5,7 +5,7 @@ function mapStateToProps({ summary }) {
   return { summary }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
   return {}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Summary)

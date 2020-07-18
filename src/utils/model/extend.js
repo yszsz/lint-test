@@ -269,7 +269,8 @@ function enhanceReducers(reducers, { initialState, namespace, initialLocalState 
      * 如果既未设置force，也未设置keys, 则根据localStorage中RESET_PART_STATE的值来决定部分重置还是全量重置
      */
     resetState(state, { payload = {} }) {
-      let { force, keys } = payload;
+      let { keys } = payload;
+      const { force } = payload;
       let nextState = { ...initialState };
       let resetAllState = localStorage.getItem(REMAIN_CORE_STATE) !== 'true';
 

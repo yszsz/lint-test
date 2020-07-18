@@ -7,11 +7,11 @@ import Analyze from './Analyze';
 import Budget from './Budget';
 
 export default {
-    Login,
-    Products,
-    Layout,
-    Example: IndexPage,
-    Summary,
-    Analyze,
-    Budget
+  Login,
+  Products,
+  Layout,
+  Example: IndexPage,
+  Summary,
+  Analyze,
+  Budget
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'dva';
 import styles from './IndexPage.less';
 
 class IndexPage extends React.Component {
@@ -15,13 +14,6 @@ class IndexPage extends React.Component {
       </div>
     )
   }
-}
-function mapStateToProps() {
-  return {}
-}
-
-function mapStateToDispatch() {
-  return {}
 }
 
 export default IndexPage

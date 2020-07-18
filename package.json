@@ -5,7 +5,8 @@
     "dev": "webpack-dev-server --progress --colors --config build/webpack.dev.js",
     "build": "webpack --progress --colors --config build/webpack.prod.js",
     "prettier": "prettier --write 'src/**/*.{js,ts,tsx}'",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint --ext .js --ext .jsx src/"
   },
   "lint-staged": {
     "linters": {
@@ -30,10 +31,12 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@babel/runtime": "^7.10.4",
     "antd": "^4.4.2",
     "babel-plugin-import": "^1.13.0",
     "classnames": "^2.2.6",
+    "dva": "^2.4.1",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "path-to-regexp": "^6.1.0",
@@ -48,18 +51,19 @@
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-dva-hmr": "^0.3.2",
     "bind-decorator": "^1.0.11",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
-    "dva": "^2.4.1",
     "es6-promise": "^4.2.8",
-    "eslint": "^4.19.1",
+    "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-umi": "^0.1.1",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
@@ -72,7 +76,7 @@
     "js-cookie": "^2.2.1",
     "less": "^3.12.0",
     "less-loader": "^5.0.0",
-    "lint-staged": "^10.2.11",
+    "lint-staged": "^8.1.5",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^2.0.5",

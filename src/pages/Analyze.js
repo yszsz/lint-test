@@ -1,5 +1,3 @@
-import React from 'react';
-
 class Analyze extends React.Component {
     render() {
         return (

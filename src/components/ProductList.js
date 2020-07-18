@@ -1,5 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Table, Popconfirm, Button } from 'antd';
 
 class ProductList extends React.Component {
@@ -9,7 +7,6 @@ class ProductList extends React.Component {
 
   render() {
     const { products } = this.props;
-    console.log('products', products)
     const columns = [{
       title: 'Name',
       dataIndex: 'name',

@@ -18,8 +18,8 @@ class HLayout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        collapsed: false,
-        pathname: 'summary'
+      collapsed: false,
+      pathname: 'summary'
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -30,7 +30,6 @@ class HLayout extends React.Component {
 
   render() {
     const { pathname } = this.state;
-
     return (
       <Layout className="layout">
         <Sider width='160'>
