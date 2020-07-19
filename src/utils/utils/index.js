@@ -8,4 +8,3 @@ export * from './other';
 
 export { default as Type } from './type';
 export { default as Regex } from './regex';
-export { default as Rule } from './rule';

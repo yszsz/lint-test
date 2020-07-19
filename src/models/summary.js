@@ -4,14 +4,10 @@ export default Model.extend({
   namespace: 'summary',
   state: [],
   subscriptions: {
-    setup({ listen, dispatch }) {
-      listen('/summary', () => {
-        console.log('summary model');
-      });
-    }
+    setup({ listen }) {
+      listen('/summary', () => {});
+    },
   },
-  effects: {
-    
-  },
+  effects: {},
   reducers: {},
 });
