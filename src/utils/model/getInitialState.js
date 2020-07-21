@@ -1,4 +1,9 @@
-const defaultLoading = { list: false, confirm: false, submit: false, spin: false };
+const defaultLoading = {
+  list: false,
+  confirm: false,
+  submit: false,
+  spin: false,
+};
 
 export default (configState = {}, state = {}, localState = {}) => {
   const search = {

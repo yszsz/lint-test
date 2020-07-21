@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { pathToRegexp } from 'path-to-regexp';
-import { Type, pick } from '../utils';
+import { Type, pick } from '../pureUtils';
 
 const getQuery = search => qs.parse(search.slice(1));
 
@@ -43,7 +43,7 @@ const getParams = (match, key) => {
  */
 export default (subscriptions = {}, { initialState = {} }) => {
   function createWrappedSubscriber(subscriber) {
-    return (props) => {
+    return props => {
       const { dispatch, history } = props;
       const listen = (pathReg, handleEnter, handleLeave, enhance = true) => {
         let listeners = {};
@@ -72,10 +72,10 @@ export default (subscriptions = {}, { initialState = {} }) => {
           dispatch({ type: 'updateState', payload: paramsObj });
         };
 
-        history.listen((location) => {
+        history.listen(location => {
           const { pathname = '', search = '' } = location;
 
-          Object.keys(listeners).forEach((key) => {
+          Object.keys(listeners).forEach(key => {
             const actions = listeners[key];
             let enterAction = null;
             let leaveAction = null;
@@ -138,10 +138,8 @@ export default (subscriptions = {}, { initialState = {} }) => {
     };
   }
 
-  return Object
-    .keys(subscriptions)
-    .reduce((last, key) => {
-      last[key] = createWrappedSubscriber(subscriptions[key]);
-      return last;
-    }, {});
+  return Object.keys(subscriptions).reduce((last, key) => {
+    last[key] = createWrappedSubscriber(subscriptions[key]);
+    return last;
+  }, {});
 };

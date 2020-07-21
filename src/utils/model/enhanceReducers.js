@@ -1,14 +1,18 @@
-import { pick, Type } from '../utils';
+import { pick, Type } from '../pureUtils';
 import storage from '../localStorage';
 
 const REMAIN_CORE_STATE = '$$reset_part_state';
 const LOCAL_STATE_SEP = '_';
 
 function getLocalStateKey(namespace) {
-  return stateKey => `$$${namespace}${LOCAL_STATE_SEP}state${LOCAL_STATE_SEP}${stateKey}`;
+  return stateKey =>
+    `$$${namespace}${LOCAL_STATE_SEP}state${LOCAL_STATE_SEP}${stateKey}`;
 }
 
-export default (reducers, { initialState, namespace, initialLocalState, allNSLocalState }) => {
+export default (
+  reducers,
+  { initialState, namespace, initialLocalState, allNSLocalState }
+) => {
   const AWLAYS_RESET_KEYS = ['visible', 'loading'];
   // initialState = { ...initialState };
 
@@ -28,7 +32,7 @@ export default (reducers, { initialState, namespace, initialLocalState, allNSLoc
 
     return {
       ...state,
-      [parentKey]: parentState
+      [parentKey]: parentState,
     };
   };
 
@@ -38,7 +42,7 @@ export default (reducers, { initialState, namespace, initialLocalState, allNSLoc
     updateState(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     updateSearch(state, { payload }) {
@@ -80,12 +84,11 @@ export default (reducers, { initialState, namespace, initialLocalState, allNSLoc
       return nextState;
     },
     localizeState(state, { payload = {} }) {
-      Object.keys((payload))
-        .forEach((key) => {
-          const value = payload[key];
-          allNSLocalState[namespace][key] = value;
-          storage.setItem(getNSLocalStateKey(key), value);
-        });
+      Object.keys(payload).forEach(key => {
+        const value = payload[key];
+        allNSLocalState[namespace][key] = value;
+        storage.setItem(getNSLocalStateKey(key), value);
+      });
       return state;
     },
     /**
@@ -98,14 +101,16 @@ export default (reducers, { initialState, namespace, initialLocalState, allNSLoc
       const localState = allNSLocalState[namespace];
       if (force) {
         allNSLocalState[namespace] = {};
-        Object.keys(localState).forEach((key) => {
+        Object.keys(localState).forEach(key => {
           localStorage.removeItem(getNSLocalStateKey(key));
         });
       } else if (keys) {
         if (!Type.isArray(keys)) {
-          throw new Error('clearLocalState must have the payload parameter with an array typeof keys ');
+          throw new Error(
+            'clearLocalState must have the payload parameter with an array typeof keys '
+          );
         }
-        keys.forEach((key) => {
+        keys.forEach(key => {
           delete allNSLocalState[namespace][key];
           localStorage.removeItem(getNSLocalStateKey(key));
         });
@@ -120,15 +125,17 @@ export default (reducers, { initialState, namespace, initialLocalState, allNSLoc
       const { force, keys } = payload;
       if (force) {
         allNSLocalState[namespace] = initialLocalState;
-        Object.keys(initialLocalState).forEach((key) => {
+        Object.keys(initialLocalState).forEach(key => {
           const value = initialLocalState[key];
           storage.setItem(getNSLocalStateKey(key), value);
         });
       } else if (keys) {
         if (!Type.isArray(keys)) {
-          throw new Error('resetLocalState must have the payload parameter with an array typeof keys ');
+          throw new Error(
+            'resetLocalState must have the payload parameter with an array typeof keys '
+          );
         }
-        keys.forEach((key) => {
+        keys.forEach(key => {
           const value = initialLocalState[key];
           allNSLocalState[namespace][key] = value;
           storage.setItem(getNSLocalStateKey(key), value);

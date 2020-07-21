@@ -1,7 +1,8 @@
 import { message as Message, Modal } from 'antd';
-import { Type } from '../utils';
+import { Type } from '../pureUtils';
 
-const getNamespace = (type, namespace) => type.includes('/') ? type.split('/')[0] : namespace;
+const getNamespace = (type, namespace) =>
+  type.includes('/') ? type.split('/')[0] : namespace;
 
 export default (effects = {}, { namespace, allNSLocalState }) => {
   function createPutEffect(sagaEffects) {
@@ -103,10 +104,12 @@ export default (effects = {}, { namespace, allNSLocalState }) => {
         update: createUpdateEffect(oldSagaEffects),
         localize: createLocalizeEffect(oldSagaEffects),
         select: createSelectEffect(oldSagaEffects),
-        call: createExtraEffect(oldSagaEffects)
+        call: createExtraEffect(oldSagaEffects),
       });
 
-      const newSagaEffects = getNewSagaEffects(!sagaEffects ? action : sagaEffects);
+      const newSagaEffects = getNewSagaEffects(
+        !sagaEffects ? action : sagaEffects
+      );
       const args = !sagaEffects ? [newSagaEffects] : [action, newSagaEffects];
 
       return yield effectFunc(...args);

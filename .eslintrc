@@ -33,7 +33,10 @@
     "react/jsx-one-expression-per-line": 0,
     "import/no-cycle": 0,
     "prefer-destructuring": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "no-nested-ternary": 0,
+    "no-lonely-if": 0,
+    "lines-between-class-members": 0
   },
   "parserOptions": {
     "ecmaVersion": 6,

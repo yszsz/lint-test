@@ -1,9 +1,12 @@
 :global {
     html, body, #root {
       height: 100%;
+      font-family: 'PingFang_SC_Medium';
     }
     ul {
       list-style: none;
+      margin: 0;
+      padding: 0;
     }
     // 自定义 Menu 样式
     .layout {
@@ -17,26 +20,25 @@
         background-color: #303030;
       }
       .ant-menu {
-        color: #fff;
+        color: #A1A4B6;
+        width: 161px;
         font-size: 16px;
         background-color: #303030;
         .ant-menu-item {
           text-align: center;
           padding: 0 !important;
+          width: 100%;
           height: 126px;
           margin: 0;
           display: flex;
           align-items: center;
           justify-content: center;
           a {
-            color: #fff;
+            color: #A1A4B6;
           }
           &:hover {
             color: #fff;
             background-color: #000;
-          }
-          .ant-menu-submenu-title {
-            width: 160px;
           }
           .menu-title {
             margin-top: -10px;
@@ -46,27 +48,30 @@
           border-right: 0;
         }
         .ant-menu-item-selected {
-          color: #fff;
           background-color: #000;
           border: none;
+          a {
+            color: #fff;
+          }
         }
       }
-      .content {
-        .header {
-          height: 50px;
-          padding: 0;
-          background-color: #fff;
-          .nav {
-            float: right;
-            display: flex;
-            align-items: center;
-            height: 100%;
-            li {
-              margin-right: 30px;
-              font-size: 16px;
-              color: #000;
-              font-family: PingFangSC-Medium, sans-serif;
-            }
+      .main {
+        padding: 0 20px;
+        .title {
+          font-size: 22px;
+          color: #000;
+          padding: 10px 0;
+        }
+        .gutter-row:first-child {
+          padding-right: 20px;
+        }
+        .wrap-tab-title {
+          font-size: 16px;
+          color: '#FF222632';
+          padding-left: 10px;
+          border-left: 6px solid #2978FF;
+          &:after {
+            height: 20px;
           }
         }
       }

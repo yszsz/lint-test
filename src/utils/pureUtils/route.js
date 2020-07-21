@@ -33,6 +33,7 @@ export function redirect(url, params = {}) {
 // 返回指定的路由, 调用此方法后，进入下一个路由会保留state(loading等状态例外), 如果没有穿入参数则返回前一个路由
 export function goBack(url, params) {
   localStorage.setItem(REMAIN_CORE_STATE, true);
+  // eslint-disable-next-line
   return Boolean(url) ? redirect(url, params) : routerRedux.goBack();
 }
 
@@ -57,20 +58,24 @@ export function getCurrentPath() {
 // 使用routeConfig方式渲染路由
 export function renderRoutes(routes) {
   return routes
-    ? routes.map(
-      (route, i) =>
-        route.children ? (
-          renderRoutes(route.children)
-        ) : (
-          <Route
-            key={route.key || i}
-            path={route.path}
-            exact={route.exact}
-            strict={route.strict}
-            breadcrumbName={route.title}
-            render={props => (route.render ? route.render({ ...props }) : <route.component {...props} />)}
-          />
-        )
+    ? routes.map((route, i) =>
+      route.children ? (
+        renderRoutes(route.children)
+      ) : (
+        <Route
+          key={route.key || i}
+          path={route.path}
+          exact={route.exact}
+          strict={route.strict}
+          breadcrumbName={route.title}
+          render={props =>
+            route.render ? (
+              route.render({ ...props })
+            ) : (
+              <route.component {...props} />
+            )}
+        />
+      )
     )
     : null;
 }

@@ -2,9 +2,7 @@ import React from 'react';
 
 class Budget extends React.Component {
   render() {
-    return (
-      <div>Budget</div>
-    );
+    return <div>Budget</div>;
   }
 }
 

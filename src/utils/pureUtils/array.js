@@ -8,5 +8,8 @@ export function toObject(arr, keyId = 'value', valueId = 'label') {
 
 // 合并数组
 export function merge(source, dest) {
-  return [...source, ...dest].reduce((occ, key) => occ.includes(key) ? occ : occ.concat([key]), []);
+  return [...source, ...dest].reduce(
+    (occ, key) => (occ.includes(key) ? occ : occ.concat([key])),
+    []
+  );
 }

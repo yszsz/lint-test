@@ -1,11 +1,11 @@
-import { connect } from 'dva'
+import { connect } from 'dva';
 import Summary from 'components/Summary';
 
 function mapStateToProps({ summary }) {
-  return { summary }
+  return { ...summary };
 }
 
 function mapDispatchToProps() {
-  return {}
+  return {};
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Summary)
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);

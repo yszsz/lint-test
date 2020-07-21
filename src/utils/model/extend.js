@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { message as Message, Modal } from 'antd';
 import { pathToRegexp } from 'path-to-regexp';
-import { getEffect, pick, Type } from '../utils';
+import { getEffect, pick, Type } from '../pureUtils';
 import storage from '../localStorage';
 
 export const REMAIN_CORE_STATE = '$$reset_part_state';

@@ -9,7 +9,9 @@ const app = dva();
 // app.use({});
 
 // 3. Model
+app.model(require('./models/layout').default);
 app.model(require('./models/summary').default);
+app.model(require('./models/analyze').default);
 
 // 4. Router
 app.router(require('./router').default);

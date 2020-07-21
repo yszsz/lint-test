@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const FORMAT = {
   DATE: 'YYYY-MM-DD',
-  DATETIME: 'YYYY-MM-DD HH:mm:ss'
+  DATETIME: 'YYYY-MM-DD HH:mm:ss',
 };
 
 // 转换为指定的格式，date支持number,moment, format等格式，参考 https://momentjs.com/docs/#/parsing/

@@ -31,7 +31,7 @@ const wrappedNativeMethods = {
   },
   clear() {
     storage.clear();
-  }
+  },
 };
 
 export default (() => {
@@ -56,4 +56,3 @@ export default (() => {
   }
   return wrappedNativeMethods;
 })();
-
